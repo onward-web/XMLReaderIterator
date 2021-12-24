@@ -36,7 +36,7 @@ class XMLChildIterator extends XMLReaderIterator
         $this->stopDepth = $reader->depth;
     }
 
-    public function rewind(): void
+    public function rewind():void
     {
         parent::next();
         parent::rewind();

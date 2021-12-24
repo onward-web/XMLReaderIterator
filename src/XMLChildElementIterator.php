@@ -63,7 +63,7 @@ class XMLChildElementIterator extends XMLElementIterator
      * @throws UnexpectedValueException
      * @return void
      */
-    public function rewind()
+    public function rewind():void
     {
         // this iterator can not really rewind. instead it places itself onto the
         // first children.
@@ -84,7 +84,7 @@ class XMLChildElementIterator extends XMLElementIterator
         $this->didRewind = true;
     }
 
-    public function next()
+    public function next():void
     {
         if ($this->valid()) {
             $this->index++;
@@ -98,7 +98,7 @@ class XMLChildElementIterator extends XMLElementIterator
         };
     }
 
-    public function valid()
+    public function valid():bool
     {
         if (!($valid = parent::valid())) {
             return $valid;
@@ -110,13 +110,13 @@ class XMLChildElementIterator extends XMLElementIterator
     /**
      * @return XMLReaderNode|null
      */
-    public function current()
+    public function current():mixed
     {
         $this->didRewind || self::rewind();
         return parent::current();
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
