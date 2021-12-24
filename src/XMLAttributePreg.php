@@ -49,7 +49,7 @@ class XMLAttributePreg extends XMLAttributeFilterBase
         $this->invert  = (bool) $invert;
     }
 
-    public function accept()
+    public function accept():bool
     {
         return (bool) preg_grep($this->pattern, $this->getAttributeValues(), $this->invert ? PREG_GREP_INVERT : 0);
     }

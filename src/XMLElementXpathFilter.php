@@ -40,7 +40,7 @@ class XMLElementXpathFilter extends XMLReaderFilterBase
         $this->expression = $expression;
     }
 
-    public function accept()
+    public function accept():bool
     {
         $buffer = $this->getInnerIterator()->getNodeTree();
         $result = simplexml_load_string($buffer)->xpath($this->expression);

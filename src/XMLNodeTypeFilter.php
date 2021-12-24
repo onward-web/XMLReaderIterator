@@ -51,7 +51,7 @@ class XMLNodeTypeFilter extends XMLReaderFilterBase
         $this->invert  = $invert;
     }
 
-    public function accept()
+    public function accept():bool
     {
         $result = in_array($this->reader->nodeType, $this->allowed);
 

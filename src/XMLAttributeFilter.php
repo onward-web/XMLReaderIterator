@@ -46,7 +46,7 @@ class XMLAttributeFilter extends XMLAttributeFilterBase
         $this->invert  = (bool) $invert;
     }
 
-    public function accept()
+    public function accept():bool
     {
         $result = $this->search($this->getAttributeValues(), $this->compare);
 
