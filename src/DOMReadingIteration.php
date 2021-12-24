@@ -81,7 +81,7 @@ class DOMReadingIteration extends IteratorIterator
             && !$this->reader->isEmptyElement;
     }
 
-    public function rewind()
+    public function rewind():void
     {
         $this->stack = array($this->rootNode);
         parent::rewind();
@@ -189,7 +189,7 @@ class DOMReadingIteration extends IteratorIterator
         return $uri;
     }
 
-    public function next()
+    public function next():void
     {
         parent::next();
         $this->lastDepth = $this->depth;
