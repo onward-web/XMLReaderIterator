@@ -103,7 +103,7 @@ class XMLReaderIterator implements Iterator, XMLReaderAggregate
         return self::valid() ? self::current() : false;
     }
 
-    public function rewind()
+    public function rewind():void
     {
         // this iterator can not really rewind
         if ($this->reader->nodeType === XMLREADER::NONE) {
@@ -117,7 +117,7 @@ class XMLReaderIterator implements Iterator, XMLReaderAggregate
     /**
      * @return bool
      */
-    public function valid()
+    public function valid():bool
     {
         return $this->lastRead;
     }
@@ -130,12 +130,12 @@ class XMLReaderIterator implements Iterator, XMLReaderAggregate
         return new XMLReaderNode($this->reader);
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
 
-    public function next()
+    public function next():void
     {
         if ($this->lastRead = $this->reader->read() and $this->reader->nodeType === XMLReader::ELEMENT) {
             $depth                      = $this->reader->depth;

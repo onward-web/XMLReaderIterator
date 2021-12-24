@@ -47,7 +47,7 @@ class XMLElementIterator extends XMLReaderIterator
     /**
      * @return void
      */
-    public function rewind()
+    public function rewind():void
     {
         parent::rewind();
         $this->ensureCurrentElementState();
@@ -58,7 +58,7 @@ class XMLElementIterator extends XMLReaderIterator
     /**
      * @return XMLReaderNode|null
      */
-    public function current()
+    public function current():mixed
     {
         $this->didRewind || self::rewind();
 
@@ -67,12 +67,12 @@ class XMLElementIterator extends XMLReaderIterator
         return self::valid() ? new XMLReaderNode($this->reader) : null;
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
 
-    public function next()
+    public function next():void
     {
         if (parent::valid()) {
             $this->index++;
