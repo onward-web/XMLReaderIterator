@@ -46,7 +46,7 @@ class XMLReaderNextIteration implements Iterator
         $this->localName = $localName;
     }
 
-    public function rewind()
+    public function rewind():void
     {
         // XMLReader can not rewind, instead we move on if before the first node
         $this->moveReaderToCurrent();
@@ -54,22 +54,22 @@ class XMLReaderNextIteration implements Iterator
         $this->index = 0;
     }
 
-    public function valid()
+    public function valid():bool
     {
         return $this->valid;
     }
 
-    public function current()
+    public function current():mixed
     {
         return $this->reader;
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
 
-    public function next()
+    public function next():void
     {
         $this->valid && $this->index++;
         if ($this->localName) {
