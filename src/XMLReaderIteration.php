@@ -71,12 +71,12 @@ class XMLReaderIteration implements Iterator
     /**
      * @return XMLReader
      */
-    public function current()
+    public function current():mixed
     {
         return $this->reader;
     }
 
-    public function next()
+    public function next():void
     {
         $this->index++;
 
@@ -88,17 +88,17 @@ class XMLReaderIteration implements Iterator
         }
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
 
-    public function valid()
+    public function valid():bool
     {
         return $this->valid;
     }
 
-    public function rewind()
+    public function rewind():void
     {
         if ($this->reader->nodeType !== XMLReader::NONE) {
             throw new BadMethodCallException('Reader can not be rewound');
