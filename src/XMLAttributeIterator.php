@@ -65,7 +65,7 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         $this->valid = $this->reader->moveToFirstAttribute();
     }
 
-    public function valid()
+    public function valid():bool
     {
         return $this->valid;
     }
@@ -91,19 +91,19 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         return isset($attributes[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset):mixed
     {
         $attributes = $this->getArrayCopy();
 
         return $attributes[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value):void
     {
         throw new BadMethodCallException('XMLReader attributes are read-only');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset):void
     {
         throw new BadMethodCallException('XMLReader attributes are read-only');
     }
