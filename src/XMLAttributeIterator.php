@@ -42,7 +42,7 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         return $this->reader->attributeCount;
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->reader->value;
     }
