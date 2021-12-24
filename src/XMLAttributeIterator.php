@@ -37,22 +37,22 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         $this->reader = $reader;
     }
 
-    public function count()
+    public function count():int
     {
         return $this->reader->attributeCount;
     }
 
-    public function current(): mixed
+    public function current():mixed
     {
         return $this->reader->value;
     }
 
-    public function key()
+    public function key():mixed
     {
         return $this->reader->name;
     }
 
-    public function next()
+    public function next():void
     {
         $this->valid = $this->reader->moveToNextAttribute();
         if (!$this->valid) {
@@ -60,7 +60,7 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         }
     }
 
-    public function rewind()
+    public function rewind():void
     {
         $this->valid = $this->reader->moveToFirstAttribute();
     }
@@ -84,7 +84,7 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         return array_keys($this->getArrayCopy());
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset):bool
     {
         $attributes = $this->getArrayCopy();
 
