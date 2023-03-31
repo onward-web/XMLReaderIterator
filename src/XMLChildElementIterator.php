@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author hakre <http://hakre.wordpress.com>
- * @license AGPL-3.0 <http://spdx.org/licenses/AGPL-3.0>
+ * @license AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later>
  */
 
 /**
@@ -49,13 +49,19 @@ class XMLChildElementIterator extends XMLElementIterator
     private $index;
 
     /**
+     * @var string|null
+     */
+    private $name;
+
+    /**
      * @inheritdoc
      *
      * @param bool $descendantAxis traverse children of children
      */
     public function __construct(XMLReader $reader, $name = null, $descendantAxis = false)
     {
-        parent::__construct($reader, $name);
+        parent::__construct($reader);
+        $this->name = $name;
         $this->descendTree = $descendantAxis;
     }
 
@@ -63,61 +69,112 @@ class XMLChildElementIterator extends XMLElementIterator
      * @throws UnexpectedValueException
      * @return void
      */
-    public function rewind():void
+    public function rewind()
     {
         // this iterator can not really rewind. instead it places itself onto the
-        // first children.
+        // first child element - if any.
+        if ($this->didRewind) {
+            return;
+        }
 
         if ($this->reader->nodeType === XMLReader::NONE) {
-            $this->moveToNextElement();
+            !$this->moveToNextByNodeType(XMLReader::ELEMENT);
         }
 
         if ($this->stopDepth === null) {
             $this->stopDepth = $this->reader->depth;
         }
 
-        // move to first child - if any
-        parent::next();
-        parent::rewind();
+        // move to first child element - if any
+        $result = $this->nextChildElementByName($this->name);
 
-        $this->index = 0;
+        $this->index = $result ? 0 : null;
         $this->didRewind = true;
     }
 
-    public function next():void
+    public function next()
     {
-        if ($this->valid()) {
-            $this->index++;
+        if (!$this->valid()) {
+            return;
         }
 
-        while ($this->valid()) {
-            parent::next();
-            if ($this->descendTree || $this->reader->depth === $this->stopDepth + 1) {
-                break;
-            }
-        };
+        $this->index++;
+        $this->nextChildElementByName($this->name);
     }
 
-    public function valid():bool
+    public function valid()
     {
-        if (!($valid = parent::valid())) {
-            return $valid;
+        if (!$this->didRewind) {
+            return false;
         }
 
-        return $this->reader->depth > $this->stopDepth;
+        $depth = $this->reader->depth;
+        if ($depth <= $this->stopDepth) {
+            return false;
+        }
+        if (!$this->descendTree && $depth !== $this->stopDepth + 1) {
+            return false;
+        }
+        if ($this->name === null || $this->reader->name === $this->name) {
+            return $this->reader->nodeType === XMLReader::ELEMENT; // always true here if reader in sync with $this
+        }
+
+        return false;
     }
 
     /**
      * @return XMLReaderNode|null
      */
-    public function current():mixed
+    public function current()
     {
-        $this->didRewind || self::rewind();
-        return parent::current();
+        $this->didRewind || $this->rewind();
+        return $this->valid() ? parent::current() : null;
     }
 
-    public function key():mixed
+    /**
+     * @return int
+     */
+    public function key()
     {
         return $this->index;
+    }
+
+    /**
+     * move to next child element by name
+     *
+     * @param string|null $name
+     * @return bool
+     */
+    private function nextChildElementByName($name = null)
+    {
+        while ($next = $this->nextElement()) {
+            $depth = $this->reader->depth;
+            if ($depth <= $this->stopDepth) {
+                return false;
+            }
+            if (!$this->descendTree && $depth !== $this->stopDepth + 1) {
+                continue;
+            }
+            if ($name === null || $this->reader->name === $name) {
+                break;
+            }
+        }
+
+        return (bool)$next;
+    }
+
+    /**
+     * @return bool
+     */
+    private function nextElement()
+    {
+        while ($this->reader->read()) {
+            if (XMLReader::ELEMENT !== $this->reader->nodeType) {
+                continue;
+            }
+            $this->touchElementStack();
+            return true;
+        }
+        return false;
     }
 }

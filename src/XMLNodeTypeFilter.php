@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author hakre <http://hakre.wordpress.com>
- * @license AGPL-3.0 <http://spdx.org/licenses/AGPL-3.0>
+ * @license AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later>
  */
 
 /**
@@ -51,7 +51,8 @@ class XMLNodeTypeFilter extends XMLReaderFilterBase
         $this->invert  = $invert;
     }
 
-    public function accept():bool
+    #[\ReturnTypeWillChange]
+    public function accept()
     {
         $result = in_array($this->reader->nodeType, $this->allowed);
 

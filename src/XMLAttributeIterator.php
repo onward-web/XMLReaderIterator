@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author hakre <http://hakre.wordpress.com>
- * @license AGPL-3.0 <http://spdx.org/licenses/AGPL-3.0>
+ * @license AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later>
  */
 
 /**
@@ -37,22 +37,26 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         $this->reader = $reader;
     }
 
-    public function count():int
+    #[\ReturnTypeWillChange]
+    public function count()
     {
         return $this->reader->attributeCount;
     }
 
-    public function current():mixed
+    #[\ReturnTypeWillChange]
+    public function current()
     {
         return $this->reader->value;
     }
 
-    public function key():mixed
+    #[\ReturnTypeWillChange]
+    public function key()
     {
         return $this->reader->name;
     }
 
-    public function next():void
+    #[\ReturnTypeWillChange]
+    public function next()
     {
         $this->valid = $this->reader->moveToNextAttribute();
         if (!$this->valid) {
@@ -60,12 +64,14 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         }
     }
 
-    public function rewind():void
+    #[\ReturnTypeWillChange]
+    public function rewind()
     {
         $this->valid = $this->reader->moveToFirstAttribute();
     }
 
-    public function valid():bool
+    #[\ReturnTypeWillChange]
+    public function valid()
     {
         return $this->valid;
     }
@@ -84,26 +90,30 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
         return array_keys($this->getArrayCopy());
     }
 
-    public function offsetExists($offset):bool
+    #[\ReturnTypeWillChange]
+    public function offsetExists($offset)
     {
         $attributes = $this->getArrayCopy();
 
         return isset($attributes[$offset]);
     }
 
-    public function offsetGet($offset):mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         $attributes = $this->getArrayCopy();
 
         return $attributes[$offset];
     }
 
-    public function offsetSet($offset, $value):void
+    #[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value)
     {
         throw new BadMethodCallException('XMLReader attributes are read-only');
     }
 
-    public function offsetUnset($offset):void
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($offset)
     {
         throw new BadMethodCallException('XMLReader attributes are read-only');
     }
@@ -113,6 +123,6 @@ class XMLAttributeIterator implements Iterator, Countable, ArrayAccess, XMLReade
      */
     public function getReader()
     {
-        return $this->getReader();
+        return $this->reader;
     }
 }

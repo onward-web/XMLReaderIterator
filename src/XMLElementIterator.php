@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author hakre <http://hakre.wordpress.com>
- * @license AGPL-3.0 <http://spdx.org/licenses/AGPL-3.0>
+ * @license AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later>
  */
 
 /**
@@ -47,7 +47,7 @@ class XMLElementIterator extends XMLReaderIterator
     /**
      * @return void
      */
-    public function rewind():void
+    public function rewind()
     {
         parent::rewind();
         $this->ensureCurrentElementState();
@@ -58,7 +58,7 @@ class XMLElementIterator extends XMLReaderIterator
     /**
      * @return XMLReaderNode|null
      */
-    public function current():mixed
+    public function current()
     {
         $this->didRewind || self::rewind();
 
@@ -67,12 +67,12 @@ class XMLElementIterator extends XMLReaderIterator
         return self::valid() ? new XMLReaderNode($this->reader) : null;
     }
 
-    public function key():mixed
+    public function key()
     {
         return $this->index;
     }
 
-    public function next():void
+    public function next()
     {
         if (parent::valid()) {
             $this->index++;

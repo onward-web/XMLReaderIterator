@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author hakre <http://hakre.wordpress.com>
- * @license AGPL-3.0 <http://spdx.org/licenses/AGPL-3.0>
+ * @license AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later>
  */
 
 /**
@@ -29,6 +29,7 @@
  * @since 0.0.19
  *
  * @method XMLElementIterator getInnerIterator()
+ * @method XMLReaderNode current()
  */
 class XMLElementXpathFilter extends XMLReaderFilterBase
 {
@@ -40,15 +41,16 @@ class XMLElementXpathFilter extends XMLReaderFilterBase
         $this->expression = $expression;
     }
 
-    public function accept():bool
+    #[\ReturnTypeWillChange]
+    public function accept()
     {
         $buffer = $this->getInnerIterator()->getNodeTree();
         $result = simplexml_load_string($buffer)->xpath($this->expression);
         $count  = count($result);
-        if ($count !== 1) {
+        if (0 === $count) {
             return false;
         }
 
-        return !($result[0]->children()->count());
+        return !($result[$count - 1]->children()->count());
     }
 }
